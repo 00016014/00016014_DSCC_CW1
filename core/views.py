@@ -6,6 +6,8 @@ from .models import Task, Category, Tag
 from .forms import TaskForm, CategoryForm
 
 
+# Task management views - CRUD operations
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
