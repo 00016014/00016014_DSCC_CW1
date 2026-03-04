@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTask</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Space Grotesk', sans-serif; }
+        body { background: #f4f6fb; min-height: 100vh; }
+
+        .navbar {
+            background: #0f172a !important;
+            padding: 0 2rem;
+            height: 64px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #6366f1 !important;
+            letter-spacing: -0.5px;
+        }
+        .navbar-brand span { color: white; }
+        .nav-link {
+            color: #94a3b8 !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(99,102,241,0.15);
+        }
+        .nav-link i { margin-right: 6px; }
+        .navbar-text { color: #64748b !important; font-size: 0.85rem; }
+
+        .main-content { padding: 2.5rem 0; }
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+        .btn-primary { background: #6366f1; border-color: #6366f1; font-weight: 600; }
+        .btn-primary:hover { background: #4f46e5; border-color: #4f46e5; }
+
+        .badge-priority-high { background: #fee2e2; color: #dc2626; }
+        .badge-priority-medium { background: #fef9c3; color: #ca8a04; }
+        .badge-priority-low { background: #dcfce7; color: #16a34a; }
+
+        .badge-status-todo { background: #e2e8f0; color: #475569; }
+        .badge-status-in_progress { background: #dbeafe; color: #2563eb; }
+        .badge-status-done { background: #dcfce7; color: #16a34a; }
+
+        .stat-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            border: none;
+        }
+        .stat-card .number { font-size: 2.5rem; font-weight: 700; line-height: 1; }
+        .stat-card .label { font-size: 0.85rem; opacity: 0.85; margin-top: 4px; }
+
+        .task-card {
+            border-left: 4px solid #6366f1;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .task-card:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(99,102,241,0.15); }
+        .task-card.priority-high { border-left-color: #dc2626; }
+        .task-card.priority-medium { border-left-color: #ca8a04; }
+        .task-card.priority-low { border-left-color: #16a34a; }
+        .task-card.status-done { opacity: 0.7; }
+
+        .page-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+        .form-label { font-weight: 600; font-size: 0.85rem; color: #374151; margin-bottom: 6px; }
+
+        .filter-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .category-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #64748b;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.82rem;
+            margin-top: 4rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+        .empty-state i { font-size: 4rem; margin-bottom: 1rem; color: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <i class="bi bi-check2-square"></i> Dev<span>Task</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'task' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'task_list' %}">
+                        <i class="bi bi-list-check"></i> My Tasks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'category_list' %}active{% endif %}" href="{% url 'category_list' %}">
+                        <i class="bi bi-folder2"></i> Categories
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <span class="navbar-text me-3"><i class="bi bi-person-circle"></i> {{ user.username }}</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}"><i class="bi bi-person-plus"></i> Register</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<footer>
+    © 2026 DevTask &mdash; Stay productive 🚀
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

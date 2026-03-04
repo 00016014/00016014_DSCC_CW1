@@ -1,0 +1,97 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2 class="mb-1 fw-bold">Welcome back, {{ user.username }} 👋</h2>
+        <p class="mb-0 opacity-75">Here's what's happening with your tasks today.</p>
+    </div>
+    <a href="{% url 'task_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>New Task
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+            <div class="number">{{ total }}</div>
+            <div class="label"><i class="bi bi-list-task me-1"></i>Total Tasks</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+            <div class="number">{{ in_progress }}</div>
+            <div class="label"><i class="bi bi-arrow-repeat me-1"></i>In Progress</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <div class="number">{{ done }}</div>
+            <div class="label"><i class="bi bi-check-circle me-1"></i>Completed</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <div class="number">{{ todo }}</div>
+            <div class="label"><i class="bi bi-clock me-1"></i>To Do</div>
+        </div>
+    </div>
+</div>
+
+{% if total > 0 %}
+<div class="card p-1 mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Overall Progress</span>
+            <span class="fw-bold text-primary">{{ progress_percent }}%</span>
+        </div>
+        <div class="progress" style="height: 10px; border-radius: 10px;">
+            <div class="progress-bar bg-primary" style="width: {{ progress_percent }}%; border-radius: 10px;"></div>        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0 fw-bold">Recent Tasks</h5>
+    <a href="{% url 'task_list' %}" class="btn btn-sm btn-outline-primary">View All <i class="bi bi-arrow-right ms-1"></i></a>
+</div>
+
+{% if recent %}
+    {% for task in recent %}
+    <div class="task-card priority-{{ task.priority }} {% if task.status == 'done' %}status-done{% endif %}">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <a href="{% url 'task_detail' task.pk %}" class="text-decoration-none">
+                    <h6 class="mb-1 fw-bold text-dark">
+                        {% if task.status == 'done' %}<s>{{ task.title }}</s>{% else %}{{ task.title }}{% endif %}
+                    </h6>
+                </a>
+                <div class="d-flex gap-2 flex-wrap mt-1">
+                    <span class="badge badge-priority-{{ task.priority }} rounded-pill">{{ task.get_priority_display }}</span>
+                    <span class="badge badge-status-{{ task.status }} rounded-pill">{{ task.get_status_display }}</span>
+                    {% if task.category %}
+                    <span class="category-pill" style="background: {{ task.category.color }}22; color: {{ task.category.color }};">
+                        <span class="category-dot" style="background: {{ task.category.color }};"></span>
+                        {{ task.category.name }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if task.due_date %}
+            <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>{{ task.due_date }}</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="empty-state">
+        <i class="bi bi-inbox d-block"></i>
+        <h5>No tasks yet</h5>
+        <p>Create your first task to get started!</p>
+        <a href="{% url 'task_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>Create Task
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}
