@@ -1,4 +1,4 @@
-# DevTask - Task Management System
+<img width="1354" height="939" alt="image" src="https://github.com/user-attachments/assets/7cd4b64a-33b2-4e6d-b3b2-38422a7dc0c9" /># DevTask - Task Management System
 
 A full-stack task management web application built with Django, PostgreSQL, Docker, and Nginx.
 
@@ -97,6 +97,7 @@ docker compose exec web pytest
 │   ├── models.py    # Database models
 │   ├── views.py     # View functions
 │   ├── urls.py      # URL routing
+
 │   └── tests.py     # Unit tests
 ├── nginx/           # Nginx configuration
 ├── Dockerfile       # Multi-stage Docker build
@@ -106,3 +107,10 @@ docker compose exec web pytest
 
 ## Screenshots
 ![alt text](image.png)
+<img width="1405" height="684" alt="image" src="https://github.com/user-attachments/assets/1177d3a7-4fb9-434d-a9ce-41dbc4f6062e" />
+<img width="1370" height="648" alt="image" src="https://github.com/user-attachments/assets/c13bbeb3-d6bd-49ba-b183-781cf517574d" />
+<img width="1354" height="939" alt="image" src="https://github.com/user-attachments/assets/ea96ea25-face-4a23-ad84-dac1721c7ee1" />
+
+
+
+
