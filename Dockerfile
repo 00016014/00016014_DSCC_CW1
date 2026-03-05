@@ -8,7 +8,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ---- Stage 2: Production ----
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y netcat-traditional && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
@@ -19,10 +21,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY . .
 
-# Create folders and give permissions
-RUN mkdir -p /app/staticfiles /app/media && \
-    chown -R appuser:appgroup /app && \
-    chmod -R 755 /app/staticfiles /app/media
+RUN mkdir -p /app/staticfiles /app/media \
+    && chown -R appuser:appgroup /app \
+    && chmod -R 755 /app/staticfiles /app/media
 
 USER appuser
 
