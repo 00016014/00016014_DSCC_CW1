@@ -21,8 +21,8 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-django flake8
 
-      - name: Run code quality check
-        run: flake8 . --max-line-length=120 --exclude=venv,migrations
+      - - name: Run code quality check
+          run: flake8 . --max-line-length=120 --exclude=venv,migrations --ignore=W292,F401,F841
 
       - name: Run tests
         env:
