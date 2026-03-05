@@ -1,4 +1,4 @@
-<img width="1354" height="939" alt="image" src="https://github.com/user-attachments/assets/7cd4b64a-33b2-4e6d-b3b2-38422a7dc0c9" /># DevTask - Task Management System
+# DevTask - Task Management System
 
 A full-stack task management web application built with Django, PostgreSQL, Docker, and Nginx.
 
